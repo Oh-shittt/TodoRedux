@@ -14,10 +14,6 @@ const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>(TodosGate);
   const [newTodo, setNewTodo] = useState<string>('');
 
-  useEffect(() => {
-
-  }, []);
-
   const generateRandomId = () => {
     const min = 1;
     const max = 900;
@@ -28,7 +24,7 @@ const TodoList: React.FC = () => {
   const addTodo = () => {
     if (newTodo.trim() !== '') {
       const newTodoItem: Todo = {
-        id: todos.length + generateRandomId(),
+        id: generateRandomId(),
         text: newTodo,
         completed: false,
       };
