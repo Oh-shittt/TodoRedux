@@ -1,80 +1,51 @@
-import React, { useState, useEffect } from 'react';
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-const TodosGate: Todo[] = [
-
-];
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, addTodo, toggleTodo, deleteTodo } from './Store';
+import './Store'
 
 const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>(TodosGate);
-  const [newTodo, setNewTodo] = useState<string>('');
-
-  useEffect(() => {
-
-  }, []);
+  const todos = useSelector((state: RootState) => state.todos.todos);
+  const dispatch = useDispatch();
+  const [newTodo, NewTodo] = useState('');
 
   const generateRandomId = () => {
     const min = 1;
     const max = 900;
     const randomId = Math.floor(Math.random() * (max - min + 1)) + min;
     return (randomId)
-  };
+  }
 
-  const addTodo = () => {
+  const AddTodo = () => {
     if (newTodo.trim() !== '') {
-      const newTodoItem: Todo = {
-        id: todos.length + generateRandomId(),
-        text: newTodo,
-        completed: false,
-      };
-      setTodos([...todos, newTodoItem]);
-      setNewTodo('');
+      dispatch(addTodo({ text: newTodo, id: todos.length + generateRandomId() }));
+      NewTodo('');
     }
-  };
-
-  const toggleTodo = (id: number) => {
-    const updatedTodos = todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    );
-    setTodos(updatedTodos);
-  };
-
-  const deleteTodo = (id: number) => {
-    const updatedTodos = todos.filter(todo => todo.id !== id);
-    setTodos(updatedTodos);
   };
 
   return (
     <div>
       <h1>Todo List</h1>
+      <input
+        type="text"
+        value={newTodo}
+        onChange={(e) => NewTodo(e.target.value)}
+      />
+      <button onClick={AddTodo}>Добавить</button>
       <ul>
-        {todos.map(todo => (
-          <li key={todo.id}>
+        {todos.map(todos => (
+          <li key={todos.id}>
             <input
               type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleTodo(todo.id)}
+              checked={todos.completed}
+              onChange={() => dispatch(toggleTodo(todos.id))}
             />
-            <span style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
-              {todo.text}
+            <span style={{ textDecoration: todos.completed ? 'line-through' : 'none' }}>
+              {todos.text}
             </span>
-            <button onClick={() => deleteTodo(todo.id)}>Удалить</button>
+            <button onClick={() => dispatch(deleteTodo(todos.id))}>Удалить</button>
           </li>
         ))}
       </ul>
-      <div>
-        <input
-          type="text"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-        />
-        <button onClick={addTodo}>Добавить</button>
-      </div>
     </div>
   );
 };
