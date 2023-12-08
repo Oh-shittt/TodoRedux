@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, addTodo, toggleTodo, deleteTodo } from './Store';
 import './Store'
@@ -8,22 +7,6 @@ const TodoList: React.FC = () => {
   const todos = useSelector((state: RootState) => state.todos.todos);
   const dispatch = useDispatch();
   const [newTodo, NewTodo] = useState('');
-=======
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-const TodosGate: Todo[] = [
-
-];
-
-const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>(TodosGate);
-  const [newTodo, setNewTodo] = useState<string>('');
->>>>>>> ff8b1b38262ced44fe5acc69944675853b7f77c1
 
   const generateRandomId = () => {
     const min = 1;
@@ -34,18 +17,8 @@ const TodoList: React.FC = () => {
 
   const AddTodo = () => {
     if (newTodo.trim() !== '') {
-<<<<<<< HEAD
       dispatch(addTodo({ text: newTodo, id: todos.length + generateRandomId() }));
       NewTodo('');
-=======
-      const newTodoItem: Todo = {
-        id: generateRandomId(),
-        text: newTodo,
-        completed: false,
-      };
-      setTodos([...todos, newTodoItem]);
-      setNewTodo('');
->>>>>>> ff8b1b38262ced44fe5acc69944675853b7f77c1
     }
   };
 
